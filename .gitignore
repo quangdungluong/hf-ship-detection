@@ -1,3 +1,5 @@
 __pycache__
 *.pkl
 *.pt
+*.log
+*.csv

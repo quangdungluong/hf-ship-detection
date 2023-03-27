@@ -41,5 +41,5 @@ if __name__ == "__main__":
         submission['label'].append(results_str)
 
     df = pd.DataFrame.from_dict(submission)
+    df = df.sort_values(by=['id'])
     df.to_csv("./submission.csv", index=False)
-    print(df)
