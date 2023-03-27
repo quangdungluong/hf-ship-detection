@@ -31,7 +31,12 @@ if __name__ == "__main__":
             result = f"{pred['score']} {pred['bbox'][0]} {pred['bbox'][1]} {pred['bbox'][2]} {pred['bbox'][3]}"
             results_str.append(result)
 
-        results_str = ', '.join(results_str)
+        if len(results_str) > 1:
+            results_str = ', '.join(results_str)
+        elif len(results_str) == 1:
+            results_str = results_str[0]
+        else:
+            results_str = "0 0 0 10 10"
         submission['id'].append(base_f)
         submission['label'].append(results_str)
 
