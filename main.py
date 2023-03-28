@@ -17,7 +17,7 @@ if __name__ == "__main__":
 
     config_path = "./config/config.yaml"
     cfg = read_yaml(config_path)
-    cfg.model.version = args.model_version
+    cfg['model']['version'] = args.model_version
 
     model_cfg, predictor_cfg = load_config(cfg)
     model_cfg.model_path = args.model_path
