@@ -4,7 +4,7 @@ model:
   version: v1
 
 predictor:
-  stride: 200
+  stride: 300
   image_size: [400, 400]
   wbf_thres: 0.1
   device: "cuda:0"

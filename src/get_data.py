@@ -6,6 +6,8 @@ import argparse
 import glob
 Image.MAX_IMAGE_PIXELS = None
 from tqdm.auto import tqdm
+import random
+
 # df = pd.read_csv("../ship-detection/.extras/train.csv")
 # data_list = df.to_dict('records')
 # dict = {}
@@ -19,13 +21,14 @@ from tqdm.auto import tqdm
 
 STRIDE = 300
 IMAGE_SIZE = [400, 400]
+EMPTY_PROB = 0.1
 
 def save_txt(data, save_path):
     with open(save_path, 'w') as fp:
         for line in data:
             fp.write(" ".join(map(str, line)) + "\n")
 
-def get_subimage(image_path, anno, image_save_dir, label_save_dir):
+def get_subimage(image_path, anno, image_save_dir, label_save_dir, empty_save_dir):
     image = Image.open(image_path)
     base_f = os.path.basename(image_path)
 
@@ -50,22 +53,29 @@ def get_subimage(image_path, anno, image_save_dir, label_save_dir):
                     centerY = (minY + maxY - 2*y1) / 2
                     image_w = x2 - x1
                     image_h = y2 - y1
-                    label = 0
                     data.append([int(0), centerX/image_w, centerY/image_h, (maxX-minX)/image_w, (maxY-minY)/image_h])
             if len(data) > 0:
                 sub_image.save(os.path.join(image_save_dir, base_f[:-4] + f"_{cnt}.png"))
                 save_txt(data, os.path.join(label_save_dir, base_f[:-4] + f"_{cnt}.txt"))
                 cnt += 1
+            elif random.random() < EMPTY_PROB:
+                sub_image.save(os.path.join(empty_save_dir, base_f[:-4] + f"_{cnt}.png"))
+                label_save_path = os.path.join(empty_save_dir, base_f[:-4] + f"_{cnt}.txt")
+                with open(label_save_path, 'w', encoding='utf-8') as fp:
+                    pass
+                cnt += 1
 
 def main(args):
     img_save_dir = os.path.join(args.save_dir, "images")
     label_save_dir = os.path.join(args.save_dir, "labels")
+    empty_save_dir = os.path.join(args.save_dir, "empty")
     os.makedirs(img_save_dir, exist_ok=True)
     os.makedirs(label_save_dir, exist_ok=True)
+    os.makedirs(empty_save_dir, exist_ok=True)
     anno = pickle.load(open('anno.pkl', 'rb'))
     image_list = glob.glob(f"{args.data_dir}/**/*.png", recursive=True)
     for image_path in tqdm(image_list):
-        get_subimage(image_path, anno, img_save_dir, label_save_dir)
+        get_subimage(image_path, anno, img_save_dir, label_save_dir, empty_save_dir)
 
 
 if __name__ == "__main__":
