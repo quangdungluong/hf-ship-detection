@@ -29,7 +29,6 @@ def read_yaml(file_path):
 class ModelConfig:
     image_size: int
     model_type: str
-    model_version: str
     model_path: str
     conf: float
 
@@ -40,8 +39,7 @@ class PredictorConfig:
     image_size: list
     wbf_thres: float
 
-def load_config(cfg_path):
-    cfg = read_yaml(cfg_path)
+def load_config(cfg):
     detail_cfg = read_yaml(cfg['model']['config_path'])
     model_type = cfg['model']['type']
     model_version = cfg['model']['version']
@@ -49,7 +47,6 @@ def load_config(cfg_path):
     model_config = ModelConfig(
         image_size=detail_cfg[model_version]['img_size'],
         model_type=model_type,
-        model_version=model_version,
         model_path=detail_cfg[model_version]['model_path'],
         conf=detail_cfg[model_version]['conf']
     )
@@ -61,3 +58,25 @@ def load_config(cfg_path):
         wbf_thres=cfg['predictor']['wbf_thres']
     )
     return model_config, predictor_config
+
+def load_ensemble_config(cfg, list_model):
+    detail_cfg = read_yaml(cfg['model']['config_path'])
+    model_type = cfg['model']['type']
+
+    list_model_config = []
+
+    for model_version in list_model:
+        list_model_config.append(ModelConfig(
+                                image_size=detail_cfg[model_version]['img_size'],
+                                model_type=model_type,
+                                model_path=detail_cfg[model_version]['model_path'],
+                                conf=detail_cfg[model_version]['conf']
+    ))
+
+    predictor_config = PredictorConfig(
+        device=cfg['predictor']['device'],
+        stride=cfg['predictor']['stride'],
+        image_size=cfg['predictor']['image_size'],
+        wbf_thres=cfg['predictor']['wbf_thres']
+    )
+    return list_model_config, predictor_config

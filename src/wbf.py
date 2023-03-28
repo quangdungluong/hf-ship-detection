@@ -274,3 +274,34 @@ def do_wbf(all_predictions, thres, height, width):
         box[3] *= height
         results.append({'bbox': list(box), 'score': score})
     return results
+
+def ensemble_wbf(list_predictions, thres, height, width):
+    bboxes = []
+    scores = []
+    labels = []
+    for predictions in list_predictions:
+        bbox = [], score = []
+        for p in predictions:
+            p['bbox'][0] /= width
+            p['bbox'][1] /= height
+            p['bbox'][2] /= width
+            p['bbox'][3] /= height
+            bbox.append(p['bbox'])
+            score.append(p['score'])
+        label = [0] * len(bbox)
+        bboxes.append(bbox)
+        scores.append(score)
+        labels.append(label)
+
+    bboxes = np.array(bboxes)
+    scores = np.array(scores)
+    labels = np.array(labels)  
+    boxes, scores, labels = weighted_boxes_fusion(bboxes, scores, labels, iou_thr=thres)
+    results = []
+    for box, score in zip(boxes, scores):
+        box[0] *= width
+        box[1] *= height
+        box[2] *= width
+        box[3] *= height
+        results.append({'bbox': list(box), 'score': score})
+    return results

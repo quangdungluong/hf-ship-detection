@@ -1,34 +1,42 @@
+import torch.nn as nn
+from src.utils import PredictorConfig, ModelConfig, read_image, load_ensemble_config, read_yaml
+from typing import List
 from src.predictor import Predictor
-from src.utils import load_config, read_image, read_yaml
+from src.wbf import ensemble_wbf
 import argparse
 import glob
-from tqdm.auto import tqdm
 import os
-from src.logger import initial_logger
+from tqdm.auto import tqdm
 import pandas as pd
 
-logger = initial_logger()
+class Ensemble:
+    def __init__(self, predictor_config: PredictorConfig, list_model_config: List[ModelConfig]):
+        self.list_predictor = [Predictor(predictor_config, model_config) for model_config in list_model_config]
+        self.thres = predictor_config.wbf_thres
+
+    def detect(self, image):
+        list_predictions = [predictor.detect(image) for predictor in self.list_predictor]
+        height, width, _ = image.shape
+        final_results = ensemble_wbf(list_predictions, self.thres, height, width)
+        return final_results
+    
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model_version", type=str, default="v1")
-    parser.add_argument("--model_path", type=str, default="./weights/test.pt")
+    parser.add_argument("--list_model", nargs='+', default=['v1'])
     parser.add_argument("--image_dir", type=str, default="../ship-detection/test")
     args = parser.parse_args()
 
     config_path = "./config/config.yaml"
     cfg = read_yaml(config_path)
-    cfg.model.version = args.model_version
-
-    model_cfg, predictor_cfg = load_config(cfg)
-    model_cfg.model_path = args.model_path
-    predictor = Predictor(predictor_config=predictor_cfg, model_config=model_cfg)
+    list_model_config, predictor_config = load_ensemble_config(cfg, args.list_model)
+    ensemble = Ensemble(list_model_config=list_model_config, predictor_config=predictor_config)
 
     submission = {"id": [], "label": []}
     images_list = glob.glob(f"{args.image_dir}/**/*.png", recursive=True)
     for image_path in tqdm(images_list):
         base_f = os.path.basename(image_path)
         image = read_image(image_path)
-        predictions = predictor.detect(image)
+        predictions = ensemble.detect(image)
 
         results_str = []
         for pred in predictions:

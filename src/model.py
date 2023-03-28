@@ -11,7 +11,6 @@ class Model(nn.Module):
         super(Model, self).__init__()
         self.image_size = config.image_size
         self.model_type = config.model_type
-        self.model_version = config.model_version
         self.model_path = config.model_path
         self.conf = config.conf
         self.model = self.load_model()

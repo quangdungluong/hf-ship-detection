@@ -2,6 +2,9 @@ import pickle
 import glob
 import os
 import pandas as pd
+os.makedirs("./results/anno", exist_ok=True)
+os.makedirs("./results/pred", exist_ok=True)
+
 anno = pickle.load(open('anno.pkl', 'rb'))
 image_list = glob.glob("../data/raw_images/eval/**/*.png", recursive=True)
 
