@@ -280,7 +280,7 @@ def ensemble_wbf(list_predictions, thres, height, width):
     scores = []
     labels = []
     for predictions in list_predictions:
-        bbox = [], score = []
+        bbox, score = [], []
         for p in predictions:
             p['bbox'][0] /= width
             p['bbox'][1] /= height
