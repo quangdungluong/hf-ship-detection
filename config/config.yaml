@@ -6,5 +6,5 @@ model:
 predictor:
   stride: 300
   image_size: [400, 400]
-  wbf_thres: 0.1
+  wbf_thres: 0.7
   device: "cuda:0"

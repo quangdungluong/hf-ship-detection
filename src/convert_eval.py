@@ -5,7 +5,7 @@ import pandas as pd
 anno = pickle.load(open('anno.pkl', 'rb'))
 image_list = glob.glob("../data/raw_images/eval/**/*.png", recursive=True)
 
-df = pd.read_csv("submission.csv")
+df = pd.read_csv("eval.csv")
 data_list = df.to_dict('records')
 pred = {}
 for data in data_list:
@@ -29,4 +29,3 @@ for image_path in image_list:
 
     pred_data = pred[base_f]
     save_txt(pred_data, os.path.join("./results/pred", f"{base_f[:-4]}.txt"))
-    break
