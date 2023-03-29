@@ -753,7 +753,7 @@ if show_animation:
         cv2.imwrite(img_cumulative_path, img)
 
 # remove the temp_files directory
-shutil.rmtree(TEMP_FILES_PATH)
+# shutil.rmtree(TEMP_FILES_PATH)
 
 """
  Count total of detection-results
