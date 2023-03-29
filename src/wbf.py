@@ -251,7 +251,7 @@ def wbf(dets, thres, height, width):
         return []
     return do_wbf(dets, thres=thres, height=height, width=width)
 
-def do_wbf(all_predictions, thres, height, width):
+def do_wbf(all_predictions, thres, height, width, wbf_conf=0.1):
     bboxes = []
     scores = []
     for prediction in all_predictions:
@@ -269,7 +269,7 @@ def do_wbf(all_predictions, thres, height, width):
     
     filtered_boxes, filtered_scores = [], []
     for k, box in enumerate(boxes):
-        if scores[k] < thres: continue
+        if scores[k] < wbf_conf: continue
         filtered_boxes.append(box)
         filtered_scores.append(scores[k])
 
@@ -282,7 +282,7 @@ def do_wbf(all_predictions, thres, height, width):
         results.append({'bbox': list(box), 'score': score})
     return results
 
-def ensemble_wbf(list_predictions, thres, height, width):
+def ensemble_wbf(list_predictions, thres, height, width, wbf_conf=0.1):
     bboxes = []
     scores = []
     labels = []
@@ -304,10 +304,10 @@ def ensemble_wbf(list_predictions, thres, height, width):
     scores = np.array(scores)
     labels = np.array(labels)  
     boxes, scores, labels = weighted_boxes_fusion(bboxes, scores, labels, iou_thr=thres, skip_box_thr=0.001)
-    
+
     filtered_boxes, filtered_scores = [], []
     for k, box in enumerate(boxes):
-        if scores[k] < thres: continue
+        if scores[k] < wbf_conf: continue
         filtered_boxes.append(box)
         filtered_scores.append(scores[k])
 
