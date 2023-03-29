@@ -44,7 +44,7 @@ if __name__ == "__main__":
 
         results_str = []
         for pred in predictions:
-            result = f"{pred['score']} {pred['bbox'][0]} {pred['bbox'][1]} {pred['bbox'][2]} {pred['bbox'][3]}"
+            result = f"{pred['score']:.3f} {pred['bbox'][0]:.1f} {pred['bbox'][1]:.1f} {pred['bbox'][2]:.1f} {pred['bbox'][3]:.1f}"
             results_str.append(result)
 
         if len(results_str) > 1:

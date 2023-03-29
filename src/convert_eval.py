@@ -5,10 +5,10 @@ import pandas as pd
 os.makedirs("./results/anno", exist_ok=True)
 os.makedirs("./results/pred", exist_ok=True)
 
-anno = pickle.load(open('anno.pkl', 'rb'))
+anno = pickle.load(open('./data/anno.pkl', 'rb'))
 image_list = glob.glob("../data/raw_images/eval/**/*.png", recursive=True)
 
-df = pd.read_csv("eval.csv")
+df = pd.read_csv("./data/eval.csv")
 data_list = df.to_dict('records')
 pred = {}
 for data in data_list:

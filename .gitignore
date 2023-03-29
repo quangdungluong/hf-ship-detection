@@ -7,3 +7,4 @@ results/
 output/
 *.engine
 post_process.py
+*.json
