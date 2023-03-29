@@ -17,7 +17,7 @@ class Model(nn.Module):
 
     def load_model(self):
         if self.model_type == "v5":
-            model = torch.hub.load('ultralytics/yolov5', "custom", path=self.model_path, _verbose=False)
+            model = torch.hub.load('ultralytics/yolov5', "custom", path=self.model_path)
         if self.model_type == "v7":
             model = torch.hub.load('WongKinYiu/yolov7', "custom", path_or_model=self.model_path)
         model.conf = self.conf

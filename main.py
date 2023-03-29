@@ -12,6 +12,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--model_type", type=str, default="v5")
     parser.add_argument("--model_version", type=str, default="v1")
+    parser.add_argument("--model_conf", type=float, default=0.1)
     parser.add_argument("--model_path", type=str, default="./weights/test.pt")
     parser.add_argument("--image_dir", type=str, default="../ship-detection/test")
     args = parser.parse_args()
@@ -23,6 +24,7 @@ if __name__ == "__main__":
 
     model_cfg, predictor_cfg = load_config(cfg)
     model_cfg.model_path = args.model_path
+    model_cfg.conf = args.model_conf
     predictor = Predictor(predictor_config=predictor_cfg, model_config=model_cfg)
 
     submission = {"id": [], "label": []}
