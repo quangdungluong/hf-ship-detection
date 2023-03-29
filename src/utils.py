@@ -59,19 +59,17 @@ def load_config(cfg):
     )
     return model_config, predictor_config
 
-def load_ensemble_config(cfg, list_model):
-    detail_cfg = read_yaml(cfg['model']['config_path'])
-    model_type = cfg['model']['type']
-
+def load_ensemble_config(cfg, config_dict):
     list_model_config = []
-
-    for model_version in list_model:
-        list_model_config.append(ModelConfig(
-                                image_size=detail_cfg[model_version]['img_size'],
-                                model_type=model_type,
-                                model_path=detail_cfg[model_version]['model_path'],
-                                conf=detail_cfg[model_version]['conf']
-    ))
+    for model_type, config in config_dict.items():
+        detail_cfg = read_yaml(config['config_path'])
+        for model_version in config['model_list']:
+            list_model_config.append(ModelConfig(
+                                    image_size=detail_cfg[model_version]['img_size'],
+                                    model_type=model_type,
+                                    model_path=detail_cfg[model_version]['model_path'],
+                                    conf=detail_cfg[model_version]['conf']
+        ))
 
     predictor_config = PredictorConfig(
         device=cfg['predictor']['device'],

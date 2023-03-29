@@ -8,6 +8,7 @@ import glob
 import os
 from tqdm.auto import tqdm
 import pandas as pd
+import json
 
 class Ensemble:
     def __init__(self, predictor_config: PredictorConfig, list_model_config: List[ModelConfig]):
@@ -22,13 +23,16 @@ class Ensemble:
     
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--list_model", nargs='+', default=['v1'])
+    parser.add_argument("-d", "--config_dict", type=json.loads)
+    """
+    {"v5": {"model_list": [v1, v2, v3], "config_path": ""}, "v7": {}}
+    """    
     parser.add_argument("--image_dir", type=str, default="../ship-detection/test")
     args = parser.parse_args()
 
     config_path = "./config/config.yaml"
     cfg = read_yaml(config_path)
-    list_model_config, predictor_config = load_ensemble_config(cfg, args.list_model)
+    list_model_config, predictor_config = load_ensemble_config(cfg, args.config_dict)
     ensemble = Ensemble(list_model_config=list_model_config, predictor_config=predictor_config)
 
     submission = {"id": [], "label": []}
