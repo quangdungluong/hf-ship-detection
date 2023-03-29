@@ -10,6 +10,7 @@ import pandas as pd
 logger = initial_logger()
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
+    parser.add_argument("--model_type", type=str, default="v5")
     parser.add_argument("--model_version", type=str, default="v1")
     parser.add_argument("--model_path", type=str, default="./weights/test.pt")
     parser.add_argument("--image_dir", type=str, default="../ship-detection/test")
@@ -17,6 +18,7 @@ if __name__ == "__main__":
 
     config_path = "./config/config.yaml"
     cfg = read_yaml(config_path)
+    cfg['model']['type'] = args.model_type
     cfg['model']['version'] = args.model_version
 
     model_cfg, predictor_cfg = load_config(cfg)

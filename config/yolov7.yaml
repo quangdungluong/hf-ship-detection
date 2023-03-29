@@ -1,0 +1,4 @@
+v1:
+  model_path: "/kaggle/input/hf-ship-model/yolov7_v1.pt"
+  conf: 0.1
+  img_size: 1024
