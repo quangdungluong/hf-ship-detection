@@ -251,7 +251,7 @@ def wbf(dets, thres, height, width):
         return []
     return do_wbf(dets, thres=thres, height=height, width=width)
 
-def do_wbf(all_predictions, thres, height, width, wbf_conf=0.1):
+def do_wbf(all_predictions, thres, height, width, wbf_conf=0.01):
     bboxes = []
     scores = []
     for prediction in all_predictions:
@@ -282,7 +282,7 @@ def do_wbf(all_predictions, thres, height, width, wbf_conf=0.1):
         results.append({'bbox': list(box), 'score': score})
     return results
 
-def ensemble_wbf(list_predictions, thres, height, width, wbf_conf=0.1):
+def ensemble_wbf(list_predictions, thres, height, width, wbf_conf=0.01):
     bboxes = []
     scores = []
     labels = []
