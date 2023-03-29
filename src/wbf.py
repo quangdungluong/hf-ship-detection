@@ -266,8 +266,15 @@ def do_wbf(all_predictions, thres, height, width):
     scores = np.array(scores)
     labels = [0]*len(bboxes)    
     boxes, scores, labels = weighted_boxes_fusion([bboxes], [scores], [labels], iou_thr=thres)
+    
+    filtered_boxes, filtered_scores = [], []
+    for k, box in enumerate(boxes):
+        if scores[k] < thres: continue
+        filtered_boxes.append(box)
+        filtered_scores.append(scores[k])
+
     results = []
-    for box, score in zip(boxes, scores):
+    for box, score in zip(filtered_boxes, filtered_scores):
         box[0] *= width
         box[1] *= height
         box[2] *= width
@@ -296,9 +303,16 @@ def ensemble_wbf(list_predictions, thres, height, width):
     bboxes = np.array(bboxes)
     scores = np.array(scores)
     labels = np.array(labels)  
-    boxes, scores, labels = weighted_boxes_fusion(bboxes, scores, labels, iou_thr=thres)
+    boxes, scores, labels = weighted_boxes_fusion(bboxes, scores, labels, iou_thr=thres, skip_box_thr=0.001)
+    
+    filtered_boxes, filtered_scores = [], []
+    for k, box in enumerate(boxes):
+        if scores[k] < thres: continue
+        filtered_boxes.append(box)
+        filtered_scores.append(scores[k])
+
     results = []
-    for box, score in zip(boxes, scores):
+    for box, score in zip(filtered_boxes, filtered_scores):
         box[0] *= width
         box[1] *= height
         box[2] *= width
