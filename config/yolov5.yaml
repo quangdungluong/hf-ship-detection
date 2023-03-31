@@ -14,3 +14,23 @@ v4:
   model_path: "/kaggle/input/hf-ship-model/v4.engine"
   conf: 0.1
   img_size: 1024
+fold0:
+  model_path: "/kaggle/input/hf-ship-model/fold0.pt"
+  conf: 0.1
+  img_size: 1024
+fold1:
+  model_path: "/kaggle/input/hf-ship-model/fold1.pt"
+  conf: 0.1
+  img_size: 1024
+fold2:
+  model_path: "/kaggle/input/hf-ship-model/fold2.pt"
+  conf: 0.1
+  img_size: 1024
+fold3:
+  model_path: "/kaggle/input/hf-ship-model/fold3.pt"
+  conf: 0.1
+  img_size: 1024
+fold4:
+  model_path: "/kaggle/input/hf-ship-model/fold4.pt"
+  conf: 0.1
+  img_size: 1024
