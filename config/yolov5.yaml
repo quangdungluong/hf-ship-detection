@@ -34,3 +34,23 @@ fold4:
   model_path: "/kaggle/input/hf-ship-model/fold4.pt"
   conf: 0.1
   img_size: 1024
+v5_s_fold0:
+  model_path: "/kaggle/input/hf-ship-model/v5_s_fold0.pt"
+  conf: 0.01
+  img_size: 1024
+v5_s_fold1:
+  model_path: "/kaggle/input/hf-ship-model/v5_s_fold1.pt"
+  conf: 0.01
+  img_size: 1024
+v5_s_fold2:
+  model_path: "/kaggle/input/hf-ship-model/v5_s_fold2.pt"
+  conf: 0.01
+  img_size: 1024
+v5_s_fold3:
+  model_path: "/kaggle/input/hf-ship-model/v5_s_fold3.pt"
+  conf: 0.01
+  img_size: 1024
+v5_s_fold4:
+  model_path: "/kaggle/input/hf-ship-model/v5_s_fold4.pt"
+  conf: 0.01
+  img_size: 1024
