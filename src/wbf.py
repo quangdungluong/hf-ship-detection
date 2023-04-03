@@ -319,3 +319,36 @@ def ensemble_wbf(list_predictions, thres, height, width, wbf_conf=0.01):
         box[3] *= height
         results.append({'bbox': list(box), 'score': score})
     return results
+
+def merge_wbf(list_predictions, thres, height, width, wbf_conf=0.01):
+    bboxes = []
+    scores = []
+    labels = []
+    for predictions_str in list_predictions:
+        predictions = predictions_str.split(", ")
+        bbox, score = [], []
+        for p in predictions:
+            p_list = list(map(float, p.split()))
+            bbox.append([p_list[1]/width, p_list[2]/height, p_list[3]/width, p_list[4]/height])
+            score.append(p_list[0])
+        label = [0]*len(bbox)
+        bboxes.append(bbox)
+        scores.append(score)
+        labels.append(label)
+    
+    # bboxes = np.array(bboxes)
+    # scores = np.array(scores)
+    # labels = np.array(labels)
+    boxes, scores, labels = weighted_boxes_fusion(bboxes, scores, labels, iou_thr=thres, skip_box_thr=wbf_conf)
+
+    filtered_boxes, filtered_scores = [], []
+    for k, box in enumerate(boxes):
+        if scores[k] < wbf_conf: continue
+        filtered_boxes.append(box)
+        filtered_scores.append(scores[k])
+
+    results = []
+    for box, score in zip(filtered_boxes, filtered_scores):
+        result_str = f"{score:.3f} {box[0]*width:.1f} {box[1]*height:.1f} {box[2]*width:.1f} {box[3]*height:.1f}"
+        results.append(result_str)
+    return ", ".join(results)
