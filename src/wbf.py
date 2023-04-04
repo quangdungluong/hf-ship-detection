@@ -335,20 +335,11 @@ def merge_wbf(list_predictions, thres, height, width, wbf_conf=0.01):
         bboxes.append(bbox)
         scores.append(score)
         labels.append(label)
-    
-    # bboxes = np.array(bboxes)
-    # scores = np.array(scores)
-    # labels = np.array(labels)
+
     boxes, scores, labels = weighted_boxes_fusion(bboxes, scores, labels, iou_thr=thres, skip_box_thr=wbf_conf)
-
-    filtered_boxes, filtered_scores = [], []
-    for k, box in enumerate(boxes):
-        if scores[k] < wbf_conf: continue
-        filtered_boxes.append(box)
-        filtered_scores.append(scores[k])
-
     results = []
-    for box, score in zip(filtered_boxes, filtered_scores):
+    for box, score in zip(boxes, scores):
+        if score < wbf_conf: continue
         result_str = f"{score:.3f} {box[0]*width:.1f} {box[1]*height:.1f} {box[2]*width:.1f} {box[3]*height:.1f}"
         results.append(result_str)
     return ", ".join(results)

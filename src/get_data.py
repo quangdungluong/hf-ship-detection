@@ -19,9 +19,9 @@ import random
 # with open('anno.pkl', 'wb') as f:
 #     pickle.dump(dict, f)
 
-STRIDE = 300
+STRIDE = 200
 IMAGE_SIZE = [400, 400]
-EMPTY_PROB = 0.1
+EMPTY_PROB = 0.0
 
 def save_txt(data, save_path):
     with open(save_path, 'w') as fp:
@@ -72,7 +72,7 @@ def main(args):
     os.makedirs(img_save_dir, exist_ok=True)
     os.makedirs(label_save_dir, exist_ok=True)
     os.makedirs(empty_save_dir, exist_ok=True)
-    anno = pickle.load(open('anno.pkl', 'rb'))
+    anno = pickle.load(open('./data/anno.pkl', 'rb'))
     image_list = glob.glob(f"{args.data_dir}/**/*.png", recursive=True)
     for image_path in tqdm(image_list):
         get_subimage(image_path, anno, img_save_dir, label_save_dir, empty_save_dir)
@@ -80,8 +80,8 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--data_dir", default="../data/raw_images/eval")
-    parser.add_argument("--save_dir", default="../data/eval_400")
+    parser.add_argument("--data_dir", default="../data/raw_images/")
+    parser.add_argument("--save_dir", default="../data/0404_s200")
     args = parser.parse_args()
 
     main(args)
