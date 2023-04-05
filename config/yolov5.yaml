@@ -78,3 +78,23 @@ v5_s_s200_fold4:
   model_path: "/kaggle/input/hf-ship-model/v5_s_s200_fold4.pt"
   conf: 0.01
   img_size: 1024
+v5_m_bg_fold0:
+  model_path: "/kaggle/input/hf-ship-model/v5_m_bg_fold0.pt"
+  conf: 0.01
+  img_size: 1024
+v5_m_bg_fold1:
+  model_path: "/kaggle/input/hf-ship-model/v5_m_bg_fold1.pt"
+  conf: 0.01
+  img_size: 1024
+v5_m_bg_fold2:
+  model_path: "/kaggle/input/hf-ship-model/v5_m_bg_fold2.pt"
+  conf: 0.01
+  img_size: 1024
+v5_m_bg_fold3:
+  model_path: "/kaggle/input/hf-ship-model/v5_m_bg_fold3.pt"
+  conf: 0.01
+  img_size: 1024
+v5_m_bg_fold4:
+  model_path: "/kaggle/input/hf-ship-model/v5_m_bg_fold4.pt"
+  conf: 0.01
+  img_size: 1024
