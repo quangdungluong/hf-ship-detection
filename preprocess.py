@@ -17,7 +17,7 @@ image_ids = []
 labels = []
 is_bgs = []
 
-label_list = glob.glob("../data/0404_s200/**/*.txt", recursive=True)
+label_list = glob.glob("../data/ship-detection-v1/**/*.txt", recursive=True)
 
 for label_path in tqdm(label_list):
     image_name = os.path.basename(label_path)
@@ -37,17 +37,14 @@ df = pd.DataFrame({
     "is_bg": is_bgs
 })
 
-kfold = GroupKFold(n_splits=5)
+kfold = GroupKFold(n_splits=10)
 for fold, (train_idx, val_idx) in enumerate(kfold.split(df, groups=df['image_id'])):
     df.loc[val_idx, 'fold'] = fold
 df['fold'] = df['fold'].astype('int')
-df.to_csv("./data/data_0404_s200.csv", index=False)
+df.to_csv("./data/data_10fold.csv", index=False)
 
 
-df = pd.read_csv("./data/data_0404_s200.csv")
+df = pd.read_csv("./data/data_10fold.csv")
 print(df['fold'].value_counts())
-print(df[df['fold']==0]['image_id'].nunique())
-print(df[df['fold']==1]['image_id'].nunique())
-print(df[df['fold']==2]['image_id'].nunique())
-print(df[df['fold']==3]['image_id'].nunique())
-print(df[df['fold']==4]['image_id'].nunique())
+for fold in range(10):
+    print(df[df['fold']==fold]['image_id'].nunique())
