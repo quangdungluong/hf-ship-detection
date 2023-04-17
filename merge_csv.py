@@ -9,8 +9,8 @@ import pickle
 
 from tqdm.auto import tqdm
 
-df1 = pd.read_csv("./data/0504_1015.csv")
-df2 = pd.read_csv("./data/v5_m_bg_4fold.csv")
+df1 = pd.read_csv("./data/0604_0800.csv")
+df2 = pd.read_csv("./data/v5_m_10fold_4fold.csv")
 
 labels = []
 for df in [df1, df2]:
@@ -32,4 +32,4 @@ df = pd.DataFrame({
     "label": merged_results
 })
 
-df.to_csv("./data/0604_0800.csv", index=False)
+df.to_csv("./data/0804_1400.csv", index=False)
